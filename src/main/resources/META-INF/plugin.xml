@@ -25,5 +25,11 @@
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
     <extensions defaultExtensionNs="com.intellij">
 
+        <fileType name="DataGripDiagnosticLog"
+                  implementationClass="lb.bormental.language.DgLogFileType"
+                  fieldName="INSTANCE"
+                  language="DataGripLog"
+                  extensions="dlog"/>
+
     </extensions>
 </idea-plugin>

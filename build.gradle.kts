@@ -20,6 +20,11 @@ intellij {
     plugins.set(listOf(/* Plugin Dependencies */))
 }
 
+
+dependencies {
+    compileOnly(fileTree("libs"))
+}
+
 tasks {
     // Set the JVM compatibility versions
     withType<JavaCompile> {
