@@ -14,15 +14,23 @@ bazel_dep(name = "bazel_skylib", version = "1.9.2")
 
 register_toolchains("//bzl:kotlin_toolchain")
 
-# Test-only libraries. JUnit 4 and not 5, because the IntelliJ test framework is
-# JUnit 4 based, and because JUnit 5 under Bazel needs contrib_rules_jvm, which drags
-# in gazelle, rules_go and protobuf for nothing.
+# Test-only libraries. Tests are written with JUnit 5 (Jupiter); the vintage engine keeps
+# JUnit 4 ones running, which is what the IntelliJ test framework is built on.
+# Bazel has no JUnit 5 support of its own, hence //tools/junit5 -- see bzl/kt_tests.bzl.
+JUNIT = "6.1.3"
+
 maven = use_extension("@rules_jvm_external//:extensions.bzl", "maven")
 maven.install(
     # Not the default repository name 'maven': that one is shared with whatever other
     # bzlmod modules put there, and this way our lock file stays ours.
     name = "libs",
-    artifacts = ["junit:junit:4.13.2"],
+    artifacts = [
+        "org.junit.jupiter:junit-jupiter:%s" % JUNIT,
+        "org.junit.platform:junit-platform-launcher:%s" % JUNIT,
+        "org.junit.platform:junit-platform-reporting:%s" % JUNIT,
+        "org.junit.vintage:junit-vintage-engine:%s" % JUNIT,
+        "junit:junit:4.13.2",
+    ],
     lock_file = "//:maven_install.json",
 )
 use_repo(maven, "libs")

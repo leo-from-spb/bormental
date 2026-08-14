@@ -1,0 +1,13 @@
+load("@rules_kotlin//kotlin:jvm.bzl", "kt_jvm_library")
+
+# The entry point of every test target: Bazel's own test runner only speaks JUnit 4.
+kt_jvm_library(
+    name = "junit5",
+    srcs = glob(["src/**/*.kt"]),
+    testonly = True,
+    visibility = ["//visibility:public"],
+    deps = [
+        "@libs//:org_junit_platform_junit_platform_launcher",
+        "@libs//:org_junit_platform_junit_platform_reporting",
+    ],
+)

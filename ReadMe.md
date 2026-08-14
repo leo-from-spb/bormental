@@ -47,6 +47,7 @@ Layout
     bzl/packages.bzl                  how directories map to Kotlin packages
     bzl/plugin_version.bzl            the plugin version, checked against plugin.xml
     bzl/BUILD.bazel                   the Kotlin toolchain (Kotlin 2.3, JVM target 21)
+    tools/junit5/                     the JUnit 5 entry point Bazel's test rules lack
     tools/run-ide.sh                  runIde, by hand
 
 
@@ -80,6 +81,10 @@ Tests get a module of their own, `modules/<name>.tests/`, the way JPS test modul
         associates = ["//modules/core"],
     )
 
+Tests are JUnit 5; `@libs//:org_junit_jupiter_junit_jupiter` is on their classpath by default.
+The vintage engine is there too, so a JUnit 4 test runs as well — a module that wants to write
+one (the IntelliJ test framework is JUnit 4 based) adds `@libs//:junit_junit` to its `deps`.
+
 `kt_test_suite` compiles the sources once and then declares one test target per `*Test.kt`, plus
 a suite over all of them:
 
@@ -95,8 +100,9 @@ a suite over all of them:
   no `runIde` (hence `tools/run-ide.sh`), no `verifyPlugin`, no patching of `plugin.xml`. The
   version in `plugin.xml` is instead checked against `bzl/plugin_version.bzl` by
   `//modules/plugin:plugin_version_test`.
-* Tests are JUnit 4, because that is what the IntelliJ test framework is built on. JUnit 5 under
-  Bazel needs `contrib_rules_jvm`, which drags in gazelle, rules_go and protobuf.
+* Bazel's built-in test runner speaks JUnit 4 only, so test targets run `//tools/junit5` instead:
+  fifty lines that hand a test class to the JUnit Platform and leave a report where Bazel looks
+  for it. The alternative, `contrib_rules_jvm`, drags in gazelle, rules_go and protobuf.
 * `@intellij_sdk//:sdk` is `neverlink`: platform jars are compiled against, never packaged. The
   Kotlin stdlib comes from the platform (`lib/util-8.jar`) for the same reason.
 * Bundled plugins (`com.intellij.database` and friends) are not on the compile classpath yet. Add

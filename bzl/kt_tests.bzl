@@ -3,13 +3,25 @@
 Bazel runs a java_test per test class, while Kotlin wants to compile a module in one go.
 kt_test_suite does both: it compiles the sources once and then wires a test target to
 every *Test.kt found, plus a test_suite over all of them.
+
+Tests are written with JUnit 5. Bazel's built-in test runner only understands JUnit 4, so
+the targets run //tools/junit5 instead. The vintage engine is on the runtime classpath, so
+JUnit 4 tests -- the IntelliJ test framework, when we get there -- keep working; such a
+module adds @libs//:junit_junit to its deps to compile against JUnit 4.
 """
 
 load("@rules_java//java:defs.bzl", "java_test")
 load("@rules_kotlin//kotlin:jvm.bzl", "kt_jvm_library")
 load("//bzl:packages.bzl", "module_package")
 
-_JUNIT = "@libs//:junit_junit"
+_RUNNER = "//tools/junit5"
+_RUNNER_MAIN = "lb.bormental.junit5.JUnit5Runner"
+
+_JUNIT5 = "@libs//:org_junit_jupiter_junit_jupiter"
+_JUNIT5_ENGINES = [
+    "@libs//:org_junit_jupiter_junit_jupiter_engine",
+    "@libs//:org_junit_vintage_junit_vintage_engine",
+]
 
 def kt_test_suite(
         name,
@@ -30,7 +42,7 @@ def kt_test_suite(
       source_root: the part of the paths that is not the Kotlin package.
       associates: modules whose internal declarations the tests may use, as
         //modules/core -- the equivalent of a JPS test module seeing its production module.
-      deps: compile dependencies; JUnit is added automatically.
+      deps: compile dependencies; JUnit 5 is added automatically.
       runtime_deps: runtime-only dependencies.
       **kwargs: passed on to every test target, e.g. size or tags.
     """
@@ -42,7 +54,7 @@ def kt_test_suite(
         srcs = srcs,
         testonly = True,
         associates = associates,
-        deps = deps + [_JUNIT],
+        deps = deps + [_JUNIT5],
     )
 
     tests = []
@@ -55,8 +67,10 @@ def kt_test_suite(
         test_class = prefix + "." + test_name
         java_test(
             name = test_name,
-            test_class = test_class,
-            runtime_deps = runtime_deps + [":" + library],
+            args = [test_class],
+            main_class = _RUNNER_MAIN,
+            use_testrunner = False,
+            runtime_deps = runtime_deps + [":" + library, _RUNNER] + _JUNIT5_ENGINES,
             **kwargs
         )
         tests.append(":" + test_name)
