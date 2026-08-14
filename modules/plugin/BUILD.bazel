@@ -1,0 +1,29 @@
+load("@rules_kotlin//kotlin:jvm.bzl", "kt_jvm_library")
+load("@rules_shell//shell:sh_test.bzl", "sh_test")
+load("//bzl:plugin_version.bzl", "PLUGIN_VERSION")
+
+package(default_visibility = ["//:__pkg__"])  # the distribution zip
+
+# The IDE side of the plugin: the descriptor, and the glue that puts tool windows,
+# actions and file types in place.
+kt_jvm_library(
+    name = "plugin",
+    srcs = glob(["src/**/*.kt"]),
+    resource_strip_prefix = "modules/plugin/resources",
+    resources = glob(["resources/**"]),
+    deps = [
+        "//modules/core",
+        "@intellij_sdk//:sdk",
+    ],
+)
+
+sh_test(
+    name = "plugin_version_test",
+    size = "small",
+    srcs = ["//bzl:check_plugin_version.sh"],
+    args = [
+        "$(location resources/META-INF/plugin.xml)",
+        PLUGIN_VERSION,
+    ],
+    data = ["resources/META-INF/plugin.xml"],
+)

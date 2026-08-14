@@ -1,0 +1,10 @@
+load("//bzl:kt_tests.bzl", "kt_test_suite")
+
+# The tests of //modules/core. 'associates' is what lets them see its internal
+# declarations, the way a JPS test module sees its production module.
+kt_test_suite(
+    name = "core.tests",
+    size = "small",
+    srcs = glob(["src/**/*.kt"]),
+    associates = ["//modules/core"],
+)

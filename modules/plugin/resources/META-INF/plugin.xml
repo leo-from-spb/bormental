@@ -1,0 +1,22 @@
+<!-- Keep <version> in sync with bzl/plugin_version.bzl; //:plugin_version_test checks it. -->
+<idea-plugin>
+    <id>lb.bormental</id>
+    <name>Dr. Bormental</name>
+    <version>0.1.0</version>
+    <vendor url="https://www.jetbrains.com">Leonid Bushuev</vendor>
+
+    <description><![CDATA[
+        Looks thru DataGrip diagnostic log files and helps to investigate problems
+        related to the DB introspector.
+    ]]></description>
+
+    <idea-version since-build="262" until-build="263.*"/>
+
+    <depends>com.intellij.modules.platform</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <toolWindow id="Dr. Bormental"
+                    anchor="bottom"
+                    factoryClass="lb.bormental.plugin.BormentalToolWindowFactory"/>
+    </extensions>
+</idea-plugin>

@@ -1,0 +1,26 @@
+load("@rules_pkg//pkg:mappings.bzl", "pkg_files")
+load("@rules_pkg//pkg:zip.bzl", "pkg_zip")
+load("//bzl:plugin_version.bzl", "PLUGIN_VERSION")
+
+# The name of the plugin directory inside the distribution zip and inside the IDE.
+PLUGIN_DIR = "Bormental"
+
+# Every module that ends up in the plugin, and the jar name it gets there. The jars are
+# named after the modules, so that a stack trace tells where a class comes from.
+PLUGIN_MODULES = {
+    "//modules/core:core.jar": "bormental-core.jar",
+    "//modules/plugin:plugin.jar": "bormental-plugin.jar",
+}
+
+pkg_files(
+    name = "plugin_files",
+    srcs = PLUGIN_MODULES.keys(),
+    prefix = PLUGIN_DIR + "/lib",
+    renames = PLUGIN_MODULES,
+)
+
+pkg_zip(
+    name = "plugin",
+    srcs = [":plugin_files"],
+    package_file_name = "%s-%s.zip" % (PLUGIN_DIR, PLUGIN_VERSION),
+)

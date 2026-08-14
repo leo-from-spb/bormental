@@ -1,0 +1,12 @@
+# The IntelliJ Platform runs on JDK 21, so both the plugin and the tools that
+# build it are compiled against 21.
+build --java_language_version=21
+build --java_runtime_version=remotejdk_21
+build --tool_java_language_version=21
+build --tool_java_runtime_version=remotejdk_21
+
+test --test_output=errors
+
+# Personal settings that are not shared, e.g. the IDE to compile against:
+#   common --repo_env=BORMENTAL_IDE_HOME=/Users/me/Applications/Idea.app
+try-import %workspace%/.bazelrc.local

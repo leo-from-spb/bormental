@@ -1,0 +1,42 @@
+<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <linearGradient id="bmBg" x1="1" y1="1" x2="39" y2="39" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#2B7BE4"/>
+            <stop offset="1" stop-color="#16B4E8"/>
+        </linearGradient>
+        <clipPath id="bmClip">
+            <rect x="1" y="1" width="38" height="38" rx="8"/>
+        </clipPath>
+    </defs>
+
+    <rect x="1" y="1" width="38" height="38" rx="8" fill="url(#bmBg)"/>
+
+    <g clip-path="url(#bmClip)">
+        <!-- doctor: neck, coat, stethoscope, head -->
+        <rect x="10.6" y="15.5" width="3.8" height="7" fill="#FFFFFF"/>
+        <path d="M3.6 40 C3.6 27.5 7.6 22 12.5 22 C17.1 22 20.6 27.5 20.6 40 Z" fill="#FFFFFF"/>
+        <path d="M10.3 22.2 L12.5 26.8 L14.7 22.2 Z" fill="#1E5FB8"/>
+        <path d="M8.7 22.6 C6.9 27.2 8.7 31 11.4 31.6" stroke="#101820" stroke-width="1.5"
+              stroke-linecap="round" fill="none"/>
+        <circle cx="12.6" cy="32.4" r="1.7" fill="#101820"/>
+        <circle cx="12.5" cy="12" r="5.2" fill="#FFFFFF"/>
+        <path d="M7.3 12 C7.3 7.5 9.6 5.6 12.5 5.6 C15.4 5.6 17.7 7.5 17.7 12 C17 10.2 15.1 9.3 12.5 9.3 C9.9 9.3 8 10.2 7.3 12 Z"
+              fill="#101820"/>
+
+        <!-- sheets of text being reviewed -->
+        <g transform="rotate(-10 25.5 22.5)">
+            <rect x="19.5" y="14.5" width="12" height="16" rx="1" fill="#FFFFFF" stroke="#101820"
+                  stroke-width="1.2"/>
+        </g>
+        <g transform="rotate(6 27.5 25)">
+            <rect x="21.25" y="16.75" width="12.5" height="16.5" rx="1" fill="#FFFFFF"
+                  stroke="#101820" stroke-width="1.2"/>
+            <g stroke="#2B7BE4" stroke-width="1.7" stroke-linecap="round">
+                <path d="M23.6 21 H31.4"/>
+                <path d="M23.6 24.6 H31.4"/>
+                <path d="M23.6 28.2 H31.4"/>
+                <path d="M23.6 31.8 H28.4"/>
+            </g>
+        </g>
+    </g>
+</svg>

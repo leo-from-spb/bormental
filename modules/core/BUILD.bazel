@@ -1,0 +1,13 @@
+load("@rules_kotlin//kotlin:jvm.bzl", "kt_jvm_library")
+
+package(default_visibility = [
+    "//:__pkg__",  # the distribution zip
+    "//modules:__subpackages__",  # the other modules
+])
+
+# Reading and interpreting diagnostic logs. Knows nothing about the IDE, which is what
+# makes it testable with plain JUnit -- see //modules/core.tests.
+kt_jvm_library(
+    name = "core",
+    srcs = glob(["src/**/*.kt"]),
+)
